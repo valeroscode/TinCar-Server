@@ -1,21 +1,9 @@
 const express = require("express");
 const jwt = require("jsonwebtoken");
 const bcrypt = require("bcrypt");
-const { UserModel, CarModel } = require("../models/models");
+const { UserModel, CarModel, BlogModel } = require("../models/models");
 
 const router = express.Router();
-
-const verifyToken = (req, res, next) => {
-  const token = req.headers.authorization;
-  if (token) {
-    jwt.verify(token, process.env.REACT_APP_JWT, (err) => {
-      if (err) return res.sendStatus(403);
-      next();
-    });
-  } else {
-    res.sendStatus(401);
-  }
-};
 
 router.post("/register", async (req, res) => {
   const { name, username, password } = req.body;
@@ -63,6 +51,17 @@ router.get("/getCars/:id", async (req, res) => {
     const findUser = await UserModel.findById(id);
     res.json({
       data: findUser,
+    });
+  } catch (err) {
+    console.error(err);
+  }
+});
+
+router.get("/getPosts", async (req, res) => {
+  try {
+    const all = await BlogModel.find();
+    res.json({
+      data: all,
     });
   } catch (err) {
     console.error(err);
