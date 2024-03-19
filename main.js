@@ -46,8 +46,8 @@ app.post("/create-checkout-session", async (req, res) => {
           quantity: item.quantity,
         };
       }),
-      success_url: `https://tincar.onrender.com/Success`,
-      cancel_url: `https://tincar.onrender.com/`,
+      success_url: `${process.env.SERVER_URL}Success`,
+      cancel_url: `${process.env.SERVER_URL}`,
     });
     res.json({ url: session.url });
   } catch (e) {
